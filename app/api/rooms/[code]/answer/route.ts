@@ -1,6 +1,6 @@
 import { isAcceptedAnswer } from "@/lib/game-content";
 import { hashToken } from "@/lib/security";
-import { broadcastRoomUpdate, createAdminClient } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase";
 import { roomCodeSchema } from "@/lib/validation";
 import { z } from "zod";
 
@@ -29,7 +29,6 @@ export async function POST(request: Request, context: RouteContext<"/api/rooms/[
     const { error } = await supabase.from("submissions").insert({ round_id: round.id, player_id: player.id, answer: body.data.answer, is_correct: correct, points });
     if (error?.code === "23505") return Response.json({ error: "You already submitted a guess." }, { status: 409 });
     if (error) throw error;
-    await broadcastRoomUpdate(room.id);
     return Response.json({ ok: true });
   } catch (error) {
     console.error("Answer submission failed", error);

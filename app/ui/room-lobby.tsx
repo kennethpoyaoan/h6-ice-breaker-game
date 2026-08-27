@@ -67,7 +67,7 @@ export function RoomLobby({ code }: { code: string }) {
   }, [data?.room.id, data?.role, data?.viewerId, loadRoom]);
   useEffect(() => {
     if (!data?.room.id) return;
-    const interval = data.round?.status === "answering" ? 3000 : 10000;
+    const interval = data.round?.status === "answering" ? 5000 : data.room.status === "lobby" ? 3000 : 8000;
     const timer = window.setInterval(() => void loadRoom(), interval);
     return () => window.clearInterval(timer);
   }, [data?.room.id, data?.round?.status, loadRoom]);

@@ -7,7 +7,7 @@ export type EmojiPrompt = {
   category: "Everyday" | "Work" | "Food" | "Movies & stories" | "Sayings";
 };
 
-export const EMOJI_ROUND_COUNT = 5;
+export const EMOJI_ROUND_COUNT = 10;
 
 export const emojiPrompts: EmojiPrompt[] = [
   { prompt: "☕ 🌅", answer: "Morning coffee", accepted: ["morning coffee", "coffee in the morning"], category: "Everyday" },
@@ -45,6 +45,19 @@ export const emojiPrompts: EmojiPrompt[] = [
   { prompt: "🕷️ 👨", answer: "Spider-Man", accepted: ["spider-man", "spiderman", "spider man"], category: "Movies & stories" },
   { prompt: "🐼 🥋", answer: "Kung Fu Panda", accepted: ["kung fu panda", "kungfu panda"], category: "Movies & stories" },
   { prompt: "🚢 🧊 💔", answer: "Titanic", accepted: ["titanic", "the titanic"], category: "Movies & stories" },
+  { prompt: "⏰ 😤 🛏️", answer: "Morning alarm", accepted: ["morning alarm", "alarm clock", "wake up alarm"], category: "Everyday" },
+  { prompt: "🛒 🥦 💳", answer: "Grocery shopping", accepted: ["grocery shopping", "groceries", "food shopping"], category: "Everyday" },
+  { prompt: "🐕 🦮 🌳", answer: "Walking the dog", accepted: ["walking the dog", "dog walk", "walk the dog"], category: "Everyday" },
+  { prompt: "🌅 🚶 🧡", answer: "Sunset walk", accepted: ["sunset walk", "evening walk", "walk at sunset"], category: "Everyday" },
+  { prompt: "📅 😰 ⏳", answer: "Deadline crunch", accepted: ["deadline crunch", "deadline", "crunch time"], category: "Work" },
+  { prompt: "🤝 🏗️ 🎯", answer: "Team building", accepted: ["team building", "teamwork", "team build"], category: "Work" },
+  { prompt: "☕ 🕐 😌", answer: "Coffee break", accepted: ["coffee break", "tea break", "break time"], category: "Work" },
+  { prompt: "🍦 🍨 🍧", answer: "Ice cream", accepted: ["ice cream", "icecream"], category: "Food" },
+  { prompt: "🍣 🥢 🍱", answer: "Sushi dinner", accepted: ["sushi dinner", "sushi", "japanese food"], category: "Food" },
+  { prompt: "🎂 🕯️ 🎈", answer: "Birthday cake", accepted: ["birthday cake", "birthday"], category: "Food" },
+  { prompt: "🍰 ✌️ 😋", answer: "Piece of cake", accepted: ["piece of cake", "easy piece"], category: "Sayings" },
+  { prompt: "🔨 💥 🎯", answer: "Hit the nail", accepted: ["hit the nail", "hit the nail on the head"], category: "Sayings" },
+  { prompt: "⏰ 🪽 💨", answer: "Time flies", accepted: ["time flies", "time flys"], category: "Sayings" },
 ];
 
 export function normalizeAnswer(value: string) {

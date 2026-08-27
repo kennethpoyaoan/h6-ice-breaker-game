@@ -13,7 +13,7 @@ export function getBrowserSupabase() {
 
   browserClient = createClient(url, key, {
     auth: { autoRefreshToken: false, persistSession: false },
-    realtime: { params: { eventsPerSecond: 10 } },
+    realtime: { params: { eventsPerSecond: 25 } },
   });
   return browserClient;
 }

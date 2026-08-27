@@ -37,30 +37,33 @@ export async function GET(request: Request, context: RouteContext<"/api/rooms/[c
       viewerId = player.id;
     }
 
-    const { data: players, error } = await supabase
-      .from("players")
-      .select("id, nickname, score, joined_at")
-      .eq("room_id", room.id)
-      .order("joined_at");
+    const [{ data: players, error }, { data: round }] = await Promise.all([
+      supabase
+        .from("players")
+        .select("id, nickname, score, joined_at")
+        .eq("room_id", room.id)
+        .order("joined_at"),
+      supabase
+        .from("rounds")
+        .select("id, round_number, prompt, answer, status, ends_at")
+        .eq("room_id", room.id)
+        .order("round_number", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]);
     if (error) throw error;
-
-    const { data: round } = await supabase
-      .from("rounds")
-      .select("id, round_number, prompt, answer, status, ends_at")
-      .eq("room_id", room.id)
-      .order("round_number", { ascending: false })
-      .limit(1)
-      .maybeSingle();
 
     let submissionCount = 0;
     let viewerSubmission: { answer: string; is_correct: boolean; points: number } | null = null;
     if (round) {
-      const { count } = await supabase.from("submissions").select("id", { count: "exact", head: true }).eq("round_id", round.id);
-      submissionCount = count ?? 0;
-      if (viewerId) {
-        const { data: own } = await supabase.from("submissions").select("answer, is_correct, points").eq("round_id", round.id).eq("player_id", viewerId).maybeSingle();
-        viewerSubmission = own;
-      }
+      const [countResult, ownResult] = await Promise.all([
+        supabase.from("submissions").select("id", { count: "exact", head: true }).eq("round_id", round.id),
+        viewerId
+          ? supabase.from("submissions").select("answer, is_correct, points").eq("round_id", round.id).eq("player_id", viewerId).maybeSingle()
+          : Promise.resolve({ data: null }),
+      ]);
+      submissionCount = countResult.count ?? 0;
+      viewerSubmission = ownResult.data;
     }
 
     const clue = round ? getPromptClue(round.prompt) : null;
