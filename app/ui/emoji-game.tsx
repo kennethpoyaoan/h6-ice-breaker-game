@@ -52,7 +52,7 @@ export function EmojiGame({ code, data, token, onRefresh, connection, onlinePlay
   }
 
   const ranking = [...data.players].sort((a, b) => b.score - a.score);
-  if (data.room.status === "finished") return <main className="game-shell"><header className="game-top"><Link href="/" className="brand-mark"><span>✦</span> Signal Scramble</Link><span className="round-pill">Final scores</span></header><section className="podium-card"><p className="eyebrow">Emoji Transmission complete</p><h1>🏆 {ranking[0]?.nickname ?? "Great game!"}</h1><div className="score-list">{ranking.map((player, index) => <div key={player.id}><strong>{index + 1}. {player.nickname}</strong><span>{player.score.toLocaleString()} pts</span></div>)}</div><Link className="primary-button" href="/">Play again</Link></section></main>;
+  if (data.room.status === "finished") return <main className="game-shell"><header className="game-top"><Link href="/" className="brand-mark"><span>✦</span> Signal Scramble</Link><span className="round-pill">Final scores</span></header><section className="podium-card"><p className="eyebrow">Emoji Transmission complete</p><h1>🏆 {ranking[0]?.nickname ?? "Great game!"}</h1><div className="score-list">{ranking.map((player, index) => <div key={player.id}><strong>{index + 1}. {player.nickname}{player.id === data.viewerId ? " (You)" : ""}</strong><span>{player.score.toLocaleString()} pts</span></div>)}</div><Link className="primary-button" href="/">Play again</Link></section></main>;
 
   if (!round) return <main className="center-page"><section className="message-card"><span className="card-icon">!</span><h1>Round setup required</h1><p>Apply the Emoji Transmission database migration, then create a fresh room.</p><Link href="/" className="primary-button">Back home</Link></section></main>;
 
@@ -66,7 +66,7 @@ export function EmojiGame({ code, data, token, onRefresh, connection, onlinePlay
         {round.status === "reveal" && <><p className="eyebrow">The signal says…</p><div className="emoji-prompt">{round.prompt}</div><h1 className="reveal-answer">{round.answer}</h1>{data.viewerSubmission && <div className={data.viewerSubmission.is_correct ? "result correct" : "result wrong"}>{data.viewerSubmission.is_correct ? `Correct! +${data.viewerSubmission.points} points` : `Not this time — you guessed “${data.viewerSubmission.answer}”`}</div>}{data.role === "host" ? <button className="primary-button game-action" disabled={busy} onClick={() => hostAction("next")}>{round.number === EMOJI_ROUND_COUNT ? "See final scores →" : "Next signal →"}</button> : <div className="waiting-chip">Scoreboard updating…</div>}</>}
         {error && <p className="form-error" role="alert">{error}</p>}
       </div>
-      <aside className="mini-scores"><p className="eyebrow">Scoreboard</p>{ranking.map((player, index) => <div className={connection === "live" && !onlinePlayerIds.includes(player.id) ? "offline" : ""} key={player.id}><span>{index + 1}</span><strong>{player.nickname}</strong><b>{player.score}</b></div>)}</aside>
+      <aside className="mini-scores"><p className="eyebrow">Scoreboard</p>{ranking.map((player, index) => <div className={connection === "live" && !onlinePlayerIds.includes(player.id) ? "offline" : ""} key={player.id}><span>{index + 1}</span><strong>{player.nickname}{player.id === data.viewerId ? " (You)" : ""}</strong><b>{player.score}</b></div>)}</aside>
     </section>
   </main>;
 }
